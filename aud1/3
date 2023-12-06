@@ -1,0 +1,116 @@
+#include <iostream>
+using namespace std;
+
+struct President
+{
+    char name[100];
+    char party[50];
+};
+typedef struct President president;
+
+struct City
+{
+    char name[100];
+    int population;
+};
+typedef struct City city;
+
+struct Country
+{
+    char name[100];
+    President president;
+    City capital;
+    int population;
+};
+typedef struct Country Country;
+
+void readPresident(President * p)
+{
+    cin>>p->name>>p->party;
+}
+
+void printPresident(President p)
+{
+  cout<<"President: "<<p.name<<" "<<p.party<<endl;
+}
+void readCity(City * c)
+{
+    cin>>c->name>>c->population;
+}
+void printCity(City c)
+{
+    cout<<"Capital: "<<c.name<<" "<<c.population<<endl;
+}
+void readCountry(Country * c)
+{
+    cin>>c->name;
+    readPresident(&c->president);
+    readCity(&c->capital);
+    cin>>c->population;
+}
+void printCountry(Country c)
+{
+    cout<<c.name<<endl;
+    printPresident(c.president);
+    printCity(c.capital);
+    cout<<c.population<<endl;
+}
+
+int compare(Country c1, Country c2)
+{
+    if(c1.capital.population>c2.capital.population)
+    {
+        return 1;
+    }
+    else if(c1.capital.population<c2.capital.population)
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int max(int * niza, int n)
+{
+    int max=niza[0];
+    for(int i=0; i<n; i++)
+    {
+        if(niza[i]>max)
+        {
+            max=niza[i];
+        }
+    }
+    return max;
+}
+
+void printlargestpopulationofCapital(Country * countries, int n)
+{
+Country maxCountry=countries[0];
+for(int i=1; i<n; i++)
+{
+    if(compare(countries[i], maxCountry)>0)
+    {
+        maxCountry=countries[i];
+    }
+}
+    printCountry(maxCountry);
+}
+int main()
+{
+   // Country c;
+    //readCountry(&c);
+    //printCountry(c);
+
+    Country countries[100];
+    int n;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        readCountry(&countries[i]);
+    }
+
+    printlargestpopulationofCapital(countries, n);
+    return 0;
+}
