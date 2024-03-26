@@ -1,0 +1,78 @@
+#include <iostream>
+#include <math.h>
+#include <cstring>
+
+using namespace std;
+
+enum Position{
+    employee,
+    director,
+    owner
+};
+class Employee {
+private:
+    char name[50];
+    int salary;
+    Position position;
+public:
+    Employee(char * _name="Neda", int _salary=150000, Position _position=owner)
+    {
+        strcpy(name, _name);
+        salary= _salary;
+        position= _position;
+    }
+~Employee(){
+
+    }
+
+    void print() {
+        cout<<"Employee: "<<name<<"Salary: "<<salary<<" Type: ";
+        switch (position) {
+            case employee:
+                cout<<"Basic"<<endl;
+                break;
+            case director:
+            cout<<"Director"<<endl; break;
+            default:
+                cout<<"Owner"<<endl;
+        }
+    }
+    void setName(char _name[50]){
+        strcpy(name, _name);
+    }
+
+    void setSalary( int _salary)
+    {
+        salary= _salary;
+    }
+
+    void setPosition(Position _position){
+        position= _position;
+    }
+};
+
+int main()
+{
+int n;
+cin>>n;
+Employee employees[50];
+char name[50];
+int position;
+int salary;
+for(int i=0; i<n; i++)
+{
+ cin>>name>>salary>>position;
+// employees[i]= Employee(name, salary, (Position)position);
+employees[i].setName(name);
+employees[i].setSalary(salary);
+employees[i].setPosition((Position)position);
+}
+
+for(int i=0; i<n; i++)
+{
+    employees[i].print();
+}
+
+
+return 0;
+}
