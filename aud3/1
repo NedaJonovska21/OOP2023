@@ -26,7 +26,7 @@ public:
     }
 
     void print() {
-        cout<<"Employee: "<<name<<"Salary: "<<salary<<" Type: ";
+        cout<<"Employee: "<<name<<" Salary: "<<salary<<" Type: ";
         switch (position) {
             case employee:
                 cout<<"Basic"<<endl;
@@ -49,7 +49,18 @@ public:
     void setPosition(Position _position){
         position= _position;
     }
+    int compareTo(Employee other){
+        int diff=salary - other.salary;
+        return diff==0? diff: (diff>0 ? 1 : -1);
+    }
 };
+
+void swap(Employee &e1, Employee &e2)
+{
+    Employee temp = e1;
+    e1 = e2;
+    e2 = temp;
+}
 
 int main()
 {
@@ -66,6 +77,15 @@ for(int i=0; i<n; i++)
 employees[i].setName(name);
 employees[i].setSalary(salary);
 employees[i].setPosition((Position)position);
+}
+// sorting employees by salary
+for(int i=0; i<n-1; i++)
+{
+    for(int j=0; j<n-i-1; j++)
+    {
+        if(employees[j].compareTo(employees[j+1])==1)
+            swap(employees[j], employees[j+1]);
+    }
 }
 
 for(int i=0; i<n; i++)
