@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class MobilePhone{
+private:
+    char model[50];
+    int brojNaModel;
+    int godina;
+public:
+    MobilePhone(char * model="IPhone", int brojNaModel=13, int godina=2021)
+    {
+        strcpy(this->model, model);
+        this->brojNaModel=brojNaModel;
+        this->godina=godina;
+    }
+    MobilePhone(const MobilePhone & mp)
+    {
+        strcpy(model, mp.model);
+        brojNaModel=mp.brojNaModel;
+        godina=mp.godina;
+
+    }
+
+    ~MobilePhone(){
+
+    }
+
+    void print(){
+        cout<<model<<" "<<brojNaModel<<" release year: "<<godina<<endl;
+    }
+};
+
+class Owner{
+private:
+    char name[20];
+    char lastname[20];
+    MobilePhone mobilePhone;
+public:
+    Owner() {}
+
+    Owner(char * name, char * lastname, MobilePhone mobilePhone)
+    {
+        strcpy(this->name, name);
+        strcpy(this->lastname, lastname);
+        this->mobilePhone=mobilePhone;
+    }
+
+    ~Owner(){}
+
+    void print()
+    {
+        cout<<name<<" "<<lastname<<" has a mobile phone: "<<endl;
+        mobilePhone.print();
+    }
+};
+int main()
+{
+char model[20];
+int brojNaModel;
+int godina;
+char name[20];
+char lastname[20];
+
+int testCase;
+cin>>testCase;
+
+cin>>model>>brojNaModel>>godina>>name>>lastname;
+
+    if(testCase==1){
+        MobilePhone mobilePhone(model,brojNaModel,godina);
+
+        Owner owner(name,lastname,mobilePhone);
+        owner.print();
+    }
+    if(testCase==2){
+        MobilePhone mobilePhone(MobilePhone(model,brojNaModel,godina));
+
+        Owner owner(name,lastname,mobilePhone);
+        owner.print();
+    }
+
+return 0;
+}
