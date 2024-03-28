@@ -1,0 +1,119 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+class Boy{
+    char fullname[100];
+    int age;
+public:
+    Boy(){
+        strcpy(fullname, "Trajce");
+        age = 18;
+    }
+
+    Boy(char * fullname, int age) {
+        strcpy(this->fullname, fullname);
+        this->age = age;
+    }
+    ~Boy() {
+
+    }
+//copy constructor
+    Boy(const Boy & boy){
+        strcpy(fullname, boy.fullname);
+        age = boy.age;
+    }
+
+    void print() {
+        cout<<" Boy: "<<fullname<<" Age: "<<age<<endl;
+    }
+    int getAge() {
+        return age;
+    }
+
+};
+
+class Girl{
+private:
+    char fullname[100];
+    int age;
+
+public:
+    Girl() {
+        strcpy(fullname, "Ivana");
+        age=22;
+    }
+
+    Girl(char *_fullname, int _age)
+    {
+        strcpy(this->fullname, fullname);
+       this->age = age;
+    }
+
+    ~Girl()
+    {
+
+    }
+
+    Girl(const Girl & girl){
+        strcpy(fullname, girl.fullname);
+        age= girl.age;
+    }
+    void print() {
+        cout<<" Girl: "<<fullname<<" Age: "<<age<<endl;
+    }
+    int getAge() {
+        return age;
+    }
+};
+
+class Date{
+private:
+    Boy boy;
+    Girl girl;
+public:
+    Date(){
+
+    }
+    Date(Boy _boy, Girl _girl){
+        boy= _boy;
+        girl = _girl;
+    }
+    Date(const Date & date){
+        boy= date.boy;
+        girl= date.girl;
+    }
+    void print(){
+        cout<<"Date between ";
+        boy.print();
+        cout<<" and ";
+        girl.print();
+    }
+
+    void isaMatch(){
+        int diff= abs(boy.getAge() - girl.getAge());
+        if(diff <= 5) {
+            cout<<"Match"<<endl;
+        }
+        else
+        {
+            cout<<"Not a match. Swipe left"<<endl;
+        }
+
+    }
+};
+
+int main()
+{
+Boy b;
+Boy b1(b);
+b1.print();
+Girl g;
+
+Date date(b, g);
+date.print();
+date.isaMatch();
+
+return 0;
+}
