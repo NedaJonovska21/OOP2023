@@ -1,0 +1,121 @@
+#include <iostream>
+#include <cstring>
+#include <cmath>
+
+using namespace std;
+class Team{
+private:
+    char name[20];
+    int year;
+    char city[20];
+public:
+    Team(char * name=" ", int year=0, char * city=" "){
+        strcpy(this->name, name);
+        strcpy(this->city, city);
+        this->year=year;
+    }
+    ~Team(){}
+    Team(const Team & t)
+    {
+        strcpy(this->name, t.name);
+        strcpy(this->city, t.city);
+        this->year=t.year;
+    }
+    char *getName(){
+        return name;
+    }
+};
+
+class Match{
+private:
+    Team homeTeam;
+    Team guestTeam;
+    int homeGoals;
+    int guestGoals;
+public:
+    Match(){
+        homeGoals=0;
+        guestGoals=0;
+    }
+    Match(Team homeTeam, Team guestTeam, int homeGoals, int guestGoals)
+    {
+        this->homeTeam=homeTeam;
+        this->guestTeam=guestTeam;
+        this->homeGoals=homeGoals;
+        this->guestGoals=guestGoals;
+    }
+    ~Match(){}
+    Match(const Match & other)
+    {
+        this->homeTeam=other.homeTeam;
+        this->guestTeam=other.guestTeam;
+        this->homeGoals=other.homeGoals;
+        this->guestGoals=other.guestGoals;
+    }
+    Team getHomeTeam(){
+        return homeTeam;
+    }
+   Team getGuestTeam(){
+        return guestTeam;
+    }
+    int getHomeGoals()
+    {
+        return homeGoals;
+    }
+    int getGuestGoals()
+    {
+        return guestGoals;
+    }
+};
+bool isRematch(Match & first, Match & second)
+{
+    if(strcmp(first.getGuestTeam().getName(),second.getHomeTeam().getName()) == 0 &&
+    strcmp(first.getHomeTeam().getName(), second.getGuestTeam().getName()) == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+Team Duel(Match & first, Match & second)
+{
+    if(isRematch(first,second))
+    {
+        int goalsFirstTeam=first.getGuestGoals()+second.getHomeGoals();
+        int goalsSecondTeam=first.getHomeGoals()+second.getGuestGoals();
+
+        if(goalsFirstTeam>goalsSecondTeam)
+        {
+            return first.getGuestTeam();
+        }
+        else if(goalsSecondTeam>goalsFirstTeam) {
+            return first.getHomeTeam();
+        }
+        else {
+            return nullptr;
+        }
+    }
+    else {
+        cout <<"Not a rematch!" << endl;
+        return nullptr;
+    }
+}
+int main()
+{
+    Team team1 ("Barca", 1899, "Barcelona");
+    Team team2 ("Real Madrid", 1902, "Madrid");
+
+//    Team team3 (team2);
+//    team3.setName("Chelsea");
+
+    Match firstGame (team1, team2, 10, 5);
+    Match secondGame (team2, team1, 4, 6);
+
+    cout<<isRematch(firstGame, secondGame)<<endl;
+
+    cout<<Duel(firstGame, secondGame).getName();
+
+    return 0;
+}
