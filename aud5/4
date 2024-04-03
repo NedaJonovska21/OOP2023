@@ -1,0 +1,176 @@
+#include <iostream>
+#include <cstring>
+#include <string>
+
+using namespace std;
+
+class WebPage{
+private:
+    char url[100];
+    char * content;
+
+    void copy(const WebPage &wp)
+    {
+        strcpy(this->url, wp.url);
+        this->content = new char [strlen(wp.content)+1];
+        strcpy(this->content, wp.content);
+    }
+public:
+    WebPage(char * url="https://www.finki.ukim.mk/", char * content="Web sajt na FINKI"){
+        strcpy(this->url, url);
+        this->content = new char [strlen(content)+1];
+        strcpy(this->content, content);
+    }
+    WebPage(const WebPage &wp)
+    {
+        copy(wp);
+    }
+    WebPage &operator= (const WebPage &wp)
+    {
+        if(this!=&wp)
+        {
+            delete [] content;
+            copy(wp);
+        }
+        return *this;
+    }
+    ~WebPage(){
+        delete [] content;
+    }
+
+    void print()
+    {
+        cout<<url<<endl<<content<<endl;
+    }
+
+    bool isEqual(const WebPage & wp)
+    {
+        return strcmp(this->url, wp.url)==0;
+    }
+
+};
+
+class WebServer{
+private:
+    char name[30];
+    WebPage * WebPages;
+    int size;
+
+    void copy(const WebServer & ws)
+    {
+        strcpy(this->name, ws.name);
+        this->size = ws.size;
+        this->WebPages= new WebPage[this->size];
+        for(int i=0; i<size; i++)
+        {
+            this->WebPages[i]=ws.WebPages[i];
+        }
+    }
+public:
+    WebServer(char * name="FINKI server"){
+        this->size=0;
+        strcpy(this->name, name);
+        WebPages= new WebPage[size];
+    }
+
+    WebServer(const WebServer & ws)
+    {
+        copy(ws);
+    }
+    WebServer & operator = (const WebServer & ws){
+        if(this!=&ws)
+        {
+            delete [] WebPages;
+            copy(ws);
+        }
+        return *this;
+    }
+
+    ~WebServer(){
+        delete [] WebPages;
+    }
+
+    void addPage(const WebPage & wp) {
+        for (int i = 0; i < size; i++) {
+            if (WebPages[i].isEqual(wp)) {
+                return;
+
+            }
+        }
+        WebPage * temp= new WebPage [size+1];
+        for(int i=0; i<size; i++) {
+            temp[i] = WebPages[i];
+        }
+        temp[size++]=wp;
+        delete[] WebPages;
+        WebPages=temp;
+    }
+
+    void print(){
+        cout<<name<<endl;
+        for(int i=0; i<size;i++)
+        {
+            WebPages[i].print();
+        }
+    }
+
+    bool hasPage(const WebPage & wp){
+        bool found=false;
+        for(int i=0; i<size; i++)
+        {
+            if(WebPages[i].isEqual(wp))
+            {
+                found=true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    void deletePage(const WebPage & wp)
+    {
+        if(hasPage(wp)){
+            WebPage * temp = new WebPage[size-1];
+            int j=0;
+            for(int i=0; i<size; i++)
+            {
+                if(!WebPages[i].isEqual(wp)){
+                    temp[j++]=WebPages[i];
+                }
+            }
+            size--;
+            delete [] WebPages;
+            WebPages=temp;
+        }
+    }
+};
+
+int main()
+{
+    WebPage wp;
+
+    WebPage copy(wp);
+    WebPage testAssignment;
+    testAssignment=wp;
+
+   // wp.print();
+    //copy.print();
+    //testAssignment.print();
+
+   // cout<<wp.isEqual(copy);
+
+    WebServer ws("FINKI");
+    ws.addPage(wp);
+
+    WebPage courses ("courses.finki.ukim.mk", "Moodle za potrebite na FINKI");
+    ws.addPage(copy);
+    ws.addPage(testAssignment);
+    ws.addPage(courses);
+
+    ws.print();
+    cout<<endl;
+    ws.deletePage(copy);
+    ws.print();
+
+    return 0;
+}
