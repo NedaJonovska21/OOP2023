@@ -1,0 +1,53 @@
+#include<iostream>
+#include<cstring>
+
+using namespace std;
+class Student{
+private:
+    char name[50];
+    int index;
+    double average;
+    static int TOTAL_STUDENTS;
+    static double SUM_OF_AVERAGES;
+public:
+    Student(char *name,  double average){
+        strcpy(this->name, name);
+        this->average=average;
+        index = 231001+TOTAL_STUDENTS;
+        TOTAL_STUDENTS++;
+        SUM_OF_AVERAGES+=average;
+
+    }
+
+    void print() {
+        cout<<index<<" "<<name<<" "<<average<<endl;
+    }
+    static double averageOfAllStudents(){
+        return SUM_OF_AVERAGES/TOTAL_STUDENTS;
+    }
+};
+int Student::TOTAL_STUDENTS=0;
+double Student::SUM_OF_AVERAGES=0.0;
+
+
+
+int main(){
+
+    Student Neda("Neda", 9.0);
+    cout<<Student::averageOfAllStudents()<<endl;
+    Neda.print();
+
+    Student Stefan("Stefan", 8.5);
+    cout<<Student::averageOfAllStudents()<<endl;
+    Stefan.print();
+
+    Student Trajce("Trajce", 8.0);
+    cout<<Student::averageOfAllStudents()<<endl;
+    Trajce.print();
+
+    Student Ivana("Ivana", 6.7);
+    cout<<Student::averageOfAllStudents()<<endl;
+    Ivana.print();
+
+    return 0;
+}
